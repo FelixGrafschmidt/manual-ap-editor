@@ -1,5 +1,5 @@
 <template>
-	<NuxtPage class="h-screen w-screen" />
+	<NuxtPage class="h-screen max-h-screen w-screen" />
 </template>
 
 <script lang="ts" setup>
@@ -8,6 +8,6 @@
 
 <style>
 	body {
-		@apply bg-gray-8 text-gray-3;
+		@apply bg-gray-8 text-gray-3 relative;
 	}
 </style>
