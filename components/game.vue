@@ -25,7 +25,10 @@
 							<Icon
 								name="fa6-solid:plus"
 								class="h-4 w-4 cursor-pointer border rounded-full p-.5"
-								@click="newStartingItem = true"
+								@click="
+									currentStartingBlock = i;
+									newStartingItem = true;
+								"
 							/>
 						</div>
 						<div class="flex flex-row flex-wrap gap-1">
@@ -33,11 +36,7 @@
 								<span>
 									{{ item }}
 								</span>
-								<Icon
-									name="fa6-solid:xmark"
-									class="h-4 w-4 cursor-pointer rounded-full bg-red-4"
-									@click="block.items?.splice(j, 1)"
-								/>
+								<Icon name="fa6-solid:xmark" class="h-4 w-4 cursor-pointer rounded-full bg-red-4" @click="block.items?.splice(j, 1)" />
 							</div>
 						</div>
 					</div>
@@ -54,14 +53,22 @@
 						v-for="(item, i) in world.items"
 						:key="i"
 						class="cursor-pointer border rounded-full px-2 py-1"
-						:class="{ 'bg-teal-7': itemsToAdd.includes(item) }"
-						@click="itemsToAdd.includes(item) ? (itemsToAdd = itemsToAdd.filter((e) => e !== item)) : itemsToAdd.push(item)"
+						:class="{ 'bg-teal-7': itemsToAdd.includes(item.name) }"
+						@click="itemsToAdd.includes(item.name) ? (itemsToAdd = itemsToAdd.filter((e) => e !== item.name)) : itemsToAdd.push(item.name)"
 					>
 						{{ item.name }}
 					</div>
 				</div>
 				<div class="mt-8">
-					<button class="rounded bg-teal-7 px-4 py-2">Done</button>
+					<button
+						class="rounded bg-teal-7 px-4 py-2"
+						@click="
+							world.addStartingItems(currentStartingBlock, itemsToAdd);
+							newStartingItem = false;
+						"
+					>
+						Done
+					</button>
 				</div>
 			</div>
 		</Modal>
@@ -73,5 +80,6 @@
 
 	const fillerItem = ref(world.game?.filler_item_name);
 	const newStartingItem = ref(false);
-	const itemsToAdd: Ref<Item[]> = ref([]);
+	const itemsToAdd: Ref<string[]> = ref([]);
+	const currentStartingBlock = ref(-1);
 </script>

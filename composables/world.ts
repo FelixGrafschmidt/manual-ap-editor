@@ -7,15 +7,29 @@ export const useWorld = defineStore("world", () => {
 
 	async function init() {
 		try {
-			categories.value = (await useFetch("/categories")).data.value;
-			game.value = (await useFetch<Game>("/game")).data.value;
-			items.value = (await useFetch<Item[]>("/items")).data.value;
-			locations.value = (await useFetch("/locations")).data.value;
-			regions.value = (await useFetch("/regions")).data.value;
+			const results = await Promise.all([
+				useFetch("/categories"),
+				useFetch<Game>("/game"),
+				useFetch<Item[]>("/items"),
+				useFetch("/locations"),
+				useFetch("/regions"),
+			]);
+
+			categories.value = results[0].data.value;
+			game.value = results[1].data.value;
+			items.value = results[2].data.value;
+			locations.value = results[3].data.value;
+			regions.value = results[4].data.value;
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
-	return { game, items, locations, categories, regions, init };
+	function addStartingItemsToBlock(blockIndex: number, items: string[]) {
+		items.forEach((item) => {
+			game.value?.starting_items.at(blockIndex)?.items?.push(item);
+		});
+	}
+
+	return { game, items, locations, categories, regions, init, addStartingItems: addStartingItemsToBlock };
 });

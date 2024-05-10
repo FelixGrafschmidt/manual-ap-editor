@@ -57,9 +57,11 @@
 	const world = useWorld();
 	const tab = ref("game");
 
-	try {
-		await world.init();
-	} catch (error) {
-		console.error(error);
+	if (import.meta.server) {
+		try {
+			await world.init();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 </script>
