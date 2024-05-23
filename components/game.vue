@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="world.game && world.items"
-		class="h-full flex flex-col overflow-y-auto scrollbar-thumb-color-gray-9 scrollbar-track-color-gray-5 scrollbar-radius-2 scrollbar-thumb-radius-4 scrollbar-track-radius-4 scrollbar-w-4px scrollbar scrollbar-rounded"
+		class="h-full flex flex-col overflow-y-auto p-8 scrollbar-thumb-color-gray-9 scrollbar-track-color-gray-5 scrollbar-radius-2 scrollbar-thumb-radius-4 scrollbar-track-radius-4 scrollbar-w-4px scrollbar scrollbar-rounded"
 	>
 		<span class="text-xl">{{ world.game.game }}</span>
 		<span>by: {{ world.game.creator }}</span>
@@ -36,7 +36,7 @@
 								<span>
 									{{ item }}
 								</span>
-								<Icon name="fa6-solid:xmark" class="h-4 w-4 cursor-pointer rounded-full bg-red-4" @click="block.items?.splice(j, 1)" />
+								<Icon name="fa6-solid:xmark" class="h-5 w-5 cursor-pointer rounded-full bg-red-4 p-.5" @click="block.items?.splice(j, 1)" />
 							</div>
 						</div>
 					</div>

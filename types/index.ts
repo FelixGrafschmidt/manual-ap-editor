@@ -19,3 +19,18 @@ interface Item {
 	count: number;
 	progression: boolean;
 }
+
+interface Categories {
+	[k: string]: {
+		/**
+		 * (Optional) Should this category be Hidden in the client?
+		 */
+		hidden?: boolean;
+		/**
+		 * (Optional) Array of Options that will decide if the items & locations in this category are enabled
+		 */
+		yaml_option?: [string, ...string[]];
+		_comment?: string | string[];
+		[k: string]: unknown;
+	};
+}

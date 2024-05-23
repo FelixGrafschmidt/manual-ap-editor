@@ -1,8 +1,12 @@
 <template>
 	<div class="h-full flex flex-col divide-y">
 		<header class="h-5% w-screen flex flex-row justify-center">
-			<div class="w-6xl flex flex-row justify-center">
-				<h1 class="text-2xl">Manual Archipelago World Editor</h1>
+			<div class="w-6xl flex flex-row items-center justify-between">
+				<h1 class="grow text-2xl">Manual Archipelago World Editor</h1>
+				<div v-if="world.initialHash !== world.currentHash" class="flex flex-row items-center gap-4">
+					<span class="text-red-6 font-semibold"> UNSAVED CHANGES</span>
+					<button class="rounded bg-teal-6 px-2 py-1 text-black hover:bg-teal-5" @click="world.save">Save</button>
+				</div>
 			</div>
 		</header>
 		<main class="h-90% w-screen flex flex-grow flex-col items-center justify-start">
@@ -43,7 +47,7 @@
 					Regions
 				</div>
 			</div>
-			<div class="h-95% w-6xl border-x p-8">
+			<div class="h-95% w-6xl border-x">
 				<component :is="tab" />
 			</div>
 		</main>
