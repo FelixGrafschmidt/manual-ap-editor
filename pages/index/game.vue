@@ -5,11 +5,14 @@
 	>
 		<span class="text-xl">{{ world.game.game }}</span>
 		<span>by: {{ world.game.creator }}</span>
-		<div class="flex flex-row items-center gap-2 pt-4">
-			<span>Filler Item:</span>
-			<select v-model="fillerItem" class="rounded bg-gray-600 px-2 py-1">
-				<option v-for="(item, i) in world.items" :key="i" :value="item.name">{{ item.name }}</option>
-			</select>
+		<div class="flex flex-col pt-4">
+			<label class="h-12 flex flex-row items-center gap-1 gap-2">
+				<span>Filler Item:</span>
+				<input v-model="world.game.filler_item_name" class="rounded bg-gray-6 px-2 py-1 focus-visible:outline-unset" type="text" />
+			</label>
+			<span v-if="world.items.find((item) => item.name === world.game?.filler_item_name)" class="text-red-6 font-semibold">
+				Your filler item may not be one of your regular items. Please change this.</span
+			>
 		</div>
 		<div class="pt-4">
 			<span class="font-bold">Starting Items:</span>
@@ -78,7 +81,6 @@
 <script lang="ts" setup>
 	const world = useWorld();
 
-	const fillerItem = ref(world.game?.filler_item_name);
 	const newStartingItem = ref(false);
 	const itemsToAdd: Ref<string[]> = ref([]);
 	const currentStartingBlock = ref(-1);

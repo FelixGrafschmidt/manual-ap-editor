@@ -34,3 +34,11 @@ interface Categories {
 		[k: string]: unknown;
 	};
 }
+
+interface APLocation {
+	name: string;
+	category: string[];
+	requires: string;
+	place_item?: string[];
+	victory?: boolean;
+}

@@ -3,7 +3,7 @@
 		class="h-full flex flex-col overflow-y-auto scrollbar-thumb-color-gray-9 scrollbar-track-color-gray-5 scrollbar-radius-2 scrollbar-thumb-radius-4 scrollbar-track-radius-4 scrollbar-w-4px divide-y scrollbar scrollbar-rounded"
 	>
 		<div
-			class="flex flex-row cursor-pointer items-center justify-center gap-4 border-t px-4 py-6 hover:bg-gray-9"
+			class="flex flex-row cursor-pointer items-center justify-center gap-4 px-4 py-6 hover:bg-gray-9"
 			@click="
 				world.items?.unshift({
 					name: '',
@@ -18,7 +18,12 @@
 		<div v-for="(item, i) in world.items" :key="i" class="flex flex-row items-center justify-between gap-4 px-4 py-6 hover:bg-gray-9">
 			<label class="h-12 w-1/4 flex flex-col gap-1">
 				<span>Name</span>
-				<input v-model="item.name" class="rounded bg-gray-6 px-2 py-1 focus-visible:outline-unset" type="text" />
+				<input
+					:value="item.name"
+					class="rounded bg-gray-6 px-2 py-1 focus-visible:outline-unset"
+					type="text"
+					@input="($event) => world.updateItem(item, ($event.target as HTMLInputElement).value)"
+				/>
 			</label>
 			<div class="flex grow flex-col gap-1">
 				<div class="flex flex-row items-center gap-1">
@@ -51,7 +56,7 @@
 				<span>Progression?</span>
 			</label>
 			<div class="h-12 w-8 flex flex-row items-end justify-center">
-				<Icon name="fa6-solid:xmark" class="h-6 w-6 cursor-pointer rounded bg-red-4 p-.5" @click="world.items?.splice(i, 1)" />
+				<Icon name="fa6-solid:xmark" class="h-6 w-6 cursor-pointer rounded bg-red-4 p-.5" @click="world.removeItem(item.name)" />
 			</div>
 		</div>
 		<div
