@@ -28,7 +28,7 @@
 					@input="($event) => world.updateLocation(location, ($event.target as HTMLInputElement).value)"
 				/>
 			</label>
-			<div class="flex grow flex-col gap-1">
+			<div class="w-1/4 flex grow flex-col gap-1">
 				<div class="flex flex-row items-center gap-1">
 					<span>Categories</span>
 					<Icon
@@ -46,6 +46,28 @@
 					<div v-for="(category, j) in location.category" :key="j" class="w-fit flex flex-row items-center gap-2 border rounded px-2 py-1">
 						<span>
 							{{ category }}
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="w-1/4 flex grow flex-col gap-1">
+				<div class="flex flex-row items-center gap-1">
+					<span>Place Items</span>
+					<Icon
+						name="fa-solid:edit"
+						class="h-4 w-4 cursor-pointer"
+						@click="
+							currentLocation = i;
+							newItem = true;
+						"
+					/>
+				</div>
+				<div
+					class="flex flex-row flex-wrap gap-2 overflow-y-auto py-2 scrollbar-thumb-color-gray-9 scrollbar-track-color-gray-5 scrollbar-radius-2 scrollbar-thumb-radius-4 scrollbar-track-radius-4 scrollbar-w-4px scrollbar scrollbar-rounded"
+				>
+					<div v-for="(item, j) in location.place_item" :key="j" class="w-fit flex flex-row items-center gap-2 border rounded px-2 py-1">
+						<span>
+							{{ item }}
 						</span>
 					</div>
 				</div>
@@ -81,11 +103,11 @@
 						v-for="([name], i) in Object.entries(world.categories)"
 						:key="i"
 						class="cursor-pointer border rounded-full px-2 py-1"
-						:class="{ 'bg-teal-7': world.items?.at(currentLocation)?.category.includes(name) }"
+						:class="{ 'bg-teal-7': world.locations?.at(currentLocation)?.category.includes(name) }"
 						@click="
-							world.items?.at(currentLocation)?.category.includes(name)
-								? world.removeCategoryFromItem(currentLocation, name)
-								: world.addCategoryToItem(currentLocation, name)
+							world.locations?.at(currentLocation)?.category.includes(name)
+								? world.removeCategoryFromLocation(currentLocation, name)
+								: world.addCategoryToLocation(currentLocation, name)
 						"
 					>
 						{{ name }}
@@ -96,6 +118,28 @@
 				</div>
 			</div>
 		</Modal>
+		<Modal v-if="newItem && world.items" @close="newItem = false">
+			<div class="h-80vh w-80vw rounded bg-gray-7 p-8">
+				<div class="flex flex-row flex-wrap gap-4">
+					<div
+						v-for="(item, i) in world.items"
+						:key="i"
+						class="cursor-pointer border rounded-full px-2 py-1"
+						:class="{ 'bg-teal-7': world.locations?.at(currentLocation)?.place_item?.includes(item.name) }"
+						@click="
+							world.locations?.at(currentLocation)?.place_item?.includes(item.name)
+								? world.removeItemFromLocation(currentLocation, item.name)
+								: world.addItemToLocation(currentLocation, item.name)
+						"
+					>
+						{{ item.name }}
+					</div>
+				</div>
+				<div class="mt-8">
+					<button class="rounded bg-teal-7 px-4 py-2" @click="newItem = false">Done</button>
+				</div>
+			</div>
+		</Modal>
 	</div>
 </template>
 
@@ -103,5 +147,6 @@
 	const world = useWorld();
 
 	const newCategory = ref(false);
+	const newItem = ref(false);
 	const currentLocation = ref(-1);
 </script>

@@ -70,13 +70,18 @@ export const useWorld = defineStore("world", () => {
 		}
 	}
 
-	function addStartingItemsToBlock(blockIndex: number, items: string[]) {
-		items.forEach((item) => {
-			game.value?.starting_items.at(blockIndex)?.items?.push(item);
-		});
+	function addStartingItem(blockIndex: number, items: string) {
+		game.value!.starting_items.at(blockIndex)!.items?.push(items);
+	}
+
+	function removeStartingItem(blockIndex: number, name: string) {
+		game.value!.starting_items.at(blockIndex)!.items = game.value?.starting_items.at(blockIndex)?.items?.filter((item) => item !== name);
 	}
 
 	function addCategoryToItem(index: number, category: string) {
+		if (!items.value?.at(index)?.category) {
+			items.value!.at(index)!.category = [];
+		}
 		items.value?.at(index)?.category?.push(category);
 	}
 
@@ -86,6 +91,40 @@ export const useWorld = defineStore("world", () => {
 			const index = item.category.indexOf(category);
 			if (index > -1) {
 				item.category.splice(index, 1);
+			}
+		}
+	}
+
+	function addCategoryToLocation(index: number, category: string) {
+		if (!locations.value?.at(index)?.category) {
+			locations.value!.at(index)!.category = [];
+		}
+		locations.value?.at(index)?.category?.push(category);
+	}
+
+	function removeCategoryFromLocation(index: number, category: string) {
+		const location = locations.value?.at(index);
+		if (location) {
+			const index = location.category.indexOf(category);
+			if (index > -1) {
+				location.category.splice(index, 1);
+			}
+		}
+	}
+
+	function addItemToLocation(index: number, item: string) {
+		if (!locations.value?.at(index)?.place_item) {
+			locations.value!.at(index)!.place_item = [];
+		}
+		locations.value?.at(index)?.place_item?.push(item);
+	}
+
+	function removeItemFromLocation(index: number, item: string) {
+		const location = locations.value?.at(index);
+		if (location?.place_item) {
+			const index = location.place_item?.indexOf(item);
+			if (index > -1) {
+				location.place_item.splice(index, 1);
 			}
 		}
 	}
@@ -125,6 +164,22 @@ export const useWorld = defineStore("world", () => {
 		locations.value = locations.value?.filter((loc) => loc.name !== name) || [];
 	}
 
+	function revertGame() {
+		game.value = JSON.parse(JSON.stringify(initialGame.value));
+	}
+	function revertItems() {
+		items.value = JSON.parse(JSON.stringify(initialItems.value));
+	}
+	function revertLocations() {
+		locations.value = JSON.parse(JSON.stringify(initialLocations.value));
+	}
+	function revertCategories() {
+		categories.value = JSON.parse(JSON.stringify(initialCategories.value));
+	}
+	function revertRegions() {
+		regions.value = JSON.parse(JSON.stringify(initialRegions.value));
+	}
+
 	return {
 		game,
 		items,
@@ -143,7 +198,8 @@ export const useWorld = defineStore("world", () => {
 		regionChanges,
 		changes,
 		init,
-		addStartingItems: addStartingItemsToBlock,
+		addStartingItem,
+		removeStartingItem,
 		addCategoryToItem,
 		removeCategoryFromItem,
 		save,
@@ -151,5 +207,14 @@ export const useWorld = defineStore("world", () => {
 		removeItem,
 		updateLocation,
 		removeLocation,
+		addItemToLocation,
+		removeItemFromLocation,
+		addCategoryToLocation,
+		removeCategoryFromLocation,
+		revertGame,
+		revertItems,
+		revertLocations,
+		revertCategories,
+		revertRegions,
 	};
 });
